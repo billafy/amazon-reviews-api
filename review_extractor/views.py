@@ -7,10 +7,10 @@ from urllib.parse import unquote
 
 
 def extractReview(request) : 
-	http = urllib3.PoolManager()
-	reviewUrl = unquote(request.GET.get('url'))
 	try : 
-		response = http.request('GET', reviewUrl, retries=False)
+		http = urllib3.PoolManager()
+		reviewUrl = unquote(request.GET.get('url'))
+		response = http.request('GET', reviewUrl)
 		htmlRaw = response.data
 		html = BeautifulSoup(htmlRaw, features="html.parser")
 
@@ -28,4 +28,5 @@ def extractReview(request) :
 
 		return JsonResponse({'success': True, 'review': review})
 	except Exception as e : 
+		print(e)
 		return JsonResponse({'success': False})
